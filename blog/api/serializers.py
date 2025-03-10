@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "email"]
+        fields = ["username","first_name", "last_name", "email"]
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -19,14 +19,22 @@ class CommentSerializer(serializers.ModelSerializer):
         readonly = ["modified_at", "created_at"]
 
 
+class TagField(serializers.SlugRelatedField):
+    def to_internal_value(self, data):
+        try:
+            return self.get_queryset().get_or_create(value=data.lower())[0]
+        except (TypeError, ValueError):
+            self.fail(f"Tag value {data} is invalid")        
+
+
 
 class PostSerializer(serializers.ModelSerializer):
-    tags = serializers.SlugRelatedField(
-        slug_field="value", many=True, queryset=Tag.objects.all()
-    )
+    tags = TagField(
+slug_field="value", many=True,queryset=Tag.objects.all()
+)
 
     author = serializers.HyperlinkedRelatedField(
-        queryset=User.objects.all(), view_name="api_user_detail", lookup_field="email"
+        queryset=User.objects.all(), view_name="api_user_detail", lookup_field="username"
     )
     class Meta:
         model = Post
@@ -34,13 +42,6 @@ class PostSerializer(serializers.ModelSerializer):
         readonly = ["modified_at", "created_at"]
 
 
-
-class TagField(serializers.SlugRelatedField):
-    def to_internal_value(self, data):
-        try:
-            return self.get_queryset().get_or_create(value=data.lower())[0]
-        except (TypeError, ValueError):
-            self.fail(f"Tag value {data} is invalid")        
 
 class PostDetailSerializer(PostSerializer):
     comments = CommentSerializer(many=True)
