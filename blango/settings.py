@@ -23,8 +23,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly"
-    ]
-
+    ],
     "DEFAULT_THROTTLE_CLASSES": [
         "blog.api.throttling.AnonSustainedThrottle",
         "blog.api.throttling.AnonBurstThrottle",
