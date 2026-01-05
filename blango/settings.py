@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_yasg',
     'django_filters',
+    'versatileimagefield',
 ]
 
 ALLOWED_HOSTS = ['*']
@@ -172,3 +173,7 @@ SWAGGER_SETTINGS = {
         "Basic": {"type": "basic"},
     }
 }
+
+
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"

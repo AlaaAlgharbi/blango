@@ -32,35 +32,36 @@ class TagViewSet(viewsets.ModelViewSet):
             tag.posts, many=True, context={"request": request}
         )
         return Response(post_serializer.data)
-
     @method_decorator(cache_page(300))
     def list(self, *args, **kwargs):
         return super(TagViewSet, self).list(*args, **kwargs)
 
     @method_decorator(cache_page(300))
     def retrieve(self, *args, **kwargs):
-        return super(TagViewSet, self).retrieve(*args, **kwargs)    
+        return super(TagViewSet, self).retrieve(*args, **kwargs)
 
 class UserDetail(generics.RetrieveAPIView):
     authentication_classes = [SessionAuthentication]
     lookup_field = "username"
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
+    
     @method_decorator(cache_page(300))
     def get(self, *args, **kwargs):
         return super(UserDetail, self).get(*args, *kwargs)
 
+
 class PostViewSet(viewsets.ModelViewSet):
-    permission_classes = [AuthorModifyOrReadOnly | IsAdminUserForObject]
-    queryset = Post.objects.all()
-     ordering_fields = ["published_at", "author", "title", "slug"]
     filterset_class = PostFilterSet
+    permission_classes = [AuthorModifyOrReadOnly | IsAdminUserForObject]
+    ordering_fields = ["published_at", "author", "title", "slug"]
+    queryset = Post.objects.all()
+
     def get_serializer_class(self):
         if self.action in ("list", "create"):
             return PostSerializer
         return PostDetailSerializer
-     
+    
     def get_queryset(self):
         if self.request.user.is_anonymous:
             # published only
@@ -96,7 +97,6 @@ class PostViewSet(viewsets.ModelViewSet):
                 f"'new', 'today' or 'week'"
             )
 
-
     @method_decorator(cache_page(300))
     @method_decorator(vary_on_headers("Authorization"))
     @method_decorator(vary_on_cookie)
@@ -105,6 +105,7 @@ class PostViewSet(viewsets.ModelViewSet):
         if request.user.is_anonymous:
             raise PermissionDenied("You must be logged in to see which Posts are yours")
         posts = self.get_queryset().filter(author=request.user)
+
         page = self.paginate_queryset(posts)
         if page is not None:
             serializer = PostSerializer(page, many=True, context={"request": request})
