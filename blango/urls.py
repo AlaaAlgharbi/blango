@@ -22,8 +22,9 @@ import blog.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("api/v1/", include("blog.api.urls")),
     path("", blog.views.index),
+    path("api/v1/", include("blog.api.urls")),
+    path("post/<slug>/", blog.views.post_detail, name="blog-post-detail")
 ]
 
 if settings.DEBUG:
