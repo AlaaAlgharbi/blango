@@ -69,6 +69,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'drf_yasg',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'django_filters',
     'versatileimagefield',
 ]
@@ -93,6 +95,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'blango.urls'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 TEMPLATES = [
     {
