@@ -70,6 +70,7 @@ class Dev(Configuration):
         'django.contrib.messages',
         'django.contrib.staticfiles',
         'blog',
+        'debug_toolbar',
         'rest_framework',
         'rest_framework.authtoken',
         'drf_yasg',
@@ -89,6 +90,7 @@ class Dev(Configuration):
     SESSION_COOKIE_SAMESITE = 'None'
 
     MIDDLEWARE = [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
