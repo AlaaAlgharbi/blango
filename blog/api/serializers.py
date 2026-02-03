@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from blog.models import Post, Tag, Comment
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from versatileimagefield.serializers import VersatileImageFieldSerializer
+
+User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

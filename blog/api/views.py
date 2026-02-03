@@ -1,7 +1,8 @@
 from rest_framework import generics, viewsets
 from rest_framework.authentication import SessionAuthentication
 from blog.api.permissions import AuthorModifyOrReadOnly, IsAdminUserForObject
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from blog.api.serializers import PostSerializer, UserSerializer, PostDetailSerializer, TagSerializer
 from blog.models import Post, Tag
 from rest_framework.decorators import action
@@ -15,6 +16,8 @@ from django.utils import timezone
 from datetime import timedelta
 from django.http import Http404
 from blog.api.filters import PostFilterSet
+
+User = get_user_model()
 
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
