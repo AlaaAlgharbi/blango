@@ -136,7 +136,7 @@ class Dev(Configuration):
         "ALTERNATIVE_DATABASE_URL",
         default=f"sqlite:///{BASE_DIR}/alternative_db.sqlite3",
     ),
-}
+    }
 
     # Password validation
     # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -229,7 +229,7 @@ class Dev(Configuration):
           "handlers": ["console"],
           "level": "DEBUG",
       },
-  }
+    }
     
     PASSWORD_HASHERS = [
       'django.contrib.auth.hashers.Argon2PasswordHasher',
@@ -237,7 +237,8 @@ class Dev(Configuration):
       'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
       'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
     ]
-      
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    ACCOUNT_ACTIVATION_DAYS = 7  
 class Prod(Dev):
     DEBUG = False
     SECRET_KEY = values.SecretValue()
